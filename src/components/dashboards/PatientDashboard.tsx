@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   Bot, Stethoscope, Building2, Pill, Ambulance, FileText, Calendar, 
   ArrowRight, ShieldAlert, HeartPulse, Search, Star, MapPin, Clock, 
-  Bed, CheckCircle2, Sparkles, PhoneCall, Mic, Users, Activity, Siren 
+  Bed, CheckCircle2, Sparkles, PhoneCall, Mic, Users, Activity, Siren, Utensils 
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { HOSPITALS, DOCTORS } from '../../data/mockData';
@@ -138,9 +138,10 @@ export const PatientDashboard: React.FC = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-9 gap-3">
           {[
             { id: 'assistant', title: 'AI Assistant', icon: Bot, color: 'text-teal-400' },
+            { id: 'nutrition', title: 'Nutrition & Diet', icon: Utensils, color: 'text-lime-400' },
             { id: 'specialties', title: '27 Specialties', icon: Stethoscope, color: 'text-blue-400' },
             { id: 'hospitals', title: 'Nearby Hospitals', icon: Building2, color: 'text-indigo-400' },
             { id: 'medicines', title: 'Medicines', icon: Pill, color: 'text-emerald-400' },

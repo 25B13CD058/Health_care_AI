@@ -192,6 +192,64 @@ CREATE POLICY "Users can access own family members"
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
+
+-- 9. User Health & Nutrition Profiles Table
+CREATE TABLE IF NOT EXISTS public.user_health_profiles (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE UNIQUE,
+  age INT DEFAULT 30,
+  sex TEXT DEFAULT 'female',
+  height_cm NUMERIC DEFAULT 165,
+  weight_kg NUMERIC DEFAULT 64,
+  activity_level TEXT DEFAULT 'moderate',
+  goal TEXT DEFAULT 'maintain',
+  health_conditions JSONB DEFAULT '[]'::jsonb,
+  has_kidney_disease BOOLEAN DEFAULT FALSE,
+  dietary_preference TEXT DEFAULT 'vegetarian',
+  allergies JSONB DEFAULT '[]'::jsonb,
+  disliked_foods JSONB DEFAULT '[]'::jsonb,
+  daily_water_target_ml INT DEFAULT 3000,
+  logged_water_ml INT DEFAULT 0,
+  daily_protein_target_g INT DEFAULT 65,
+  logged_protein_g INT DEFAULT 0,
+  target_steps INT DEFAULT 8000,
+  logged_steps INT DEFAULT 0,
+  target_sleep_hours NUMERIC DEFAULT 8,
+  logged_sleep_hours NUMERIC DEFAULT 0,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.user_health_profiles ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can access own health profile"
+  ON public.user_health_profiles FOR ALL
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
+
+
+-- 10. Nutrition & Progress Logs Table
+CREATE TABLE IF NOT EXISTS public.nutrition_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  date TEXT NOT NULL,
+  weight_kg NUMERIC,
+  bmi NUMERIC,
+  water_ml INT,
+  protein_g INT,
+  steps INT,
+  sleep_hours NUMERIC,
+  adherence_score INT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.nutrition_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can access own nutrition logs"
+  ON public.nutrition_logs FOR ALL
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
+
 -- ====================================================================
 -- END OF SUPABASE SCHEMA & RLS SETUP
 -- ====================================================================
+

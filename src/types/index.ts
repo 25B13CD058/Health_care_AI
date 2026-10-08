@@ -288,3 +288,111 @@ export interface TimelineItem {
   details: string;
   doctorName?: string;
 }
+
+export type HealthConditionType = 
+  | 'thyroid' 
+  | 'diabetes' 
+  | 'pcos' 
+  | 'high_bp' 
+  | 'high_cholesterol' 
+  | 'anemia' 
+  | 'fatty_liver' 
+  | 'heart_health' 
+  | 'obesity' 
+  | 'underweight' 
+  | 'vitamin_d' 
+  | 'vitamin_b12';
+
+export type DietaryPreference = 'vegetarian' | 'non_vegetarian' | 'vegan' | 'eggetarian';
+
+export type ActivityLevel = 'sedentary' | 'light' | 'moderate' | 'very_active';
+
+export type HealthGoal = 'maintain' | 'gain' | 'lose';
+
+export interface HealthConditionGuide {
+  id: HealthConditionType;
+  title: string;
+  iconName: string;
+  shortDescription: string;
+  recommendedFoods: { name: string; why: string }[];
+  foodsToLimit: { name: string; why: string }[];
+  medicalGuidanceFoods: { name: string; why: string }[];
+  nutrientsOfInterest: { name: string; role: string; sources: string }[];
+  mealIdeas: {
+    breakfast: string;
+    lunch: string;
+    snack: string;
+    dinner: string;
+  };
+  medicalNotes: string[];
+  subTypesNotes?: string;
+  medicationInteractionNotice?: string;
+}
+
+export type FoodCategory = 
+  | 'fruits' 
+  | 'vegetables' 
+  | 'grains' 
+  | 'pulses' 
+  | 'eggs' 
+  | 'meat' 
+  | 'fish' 
+  | 'dairy' 
+  | 'nuts' 
+  | 'seeds' 
+  | 'fats' 
+  | 'beverages';
+
+export interface FoodItem {
+  id: string;
+  name: string;
+  category: FoodCategory;
+  servingSize: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  fiber: number;
+  isIndian: boolean;
+  vitaminsAndMinerals: string[];
+  suitableConditions: HealthConditionType[];
+  moderationConditions: HealthConditionType[];
+  dietaryCategory: DietaryPreference;
+  allergens?: string[];
+  image?: string;
+}
+
+export interface UserHealthProfile {
+  age: number;
+  sex: 'male' | 'female' | 'other';
+  heightCm: number;
+  weightKg: number;
+  activityLevel: ActivityLevel;
+  goal: HealthGoal;
+  healthConditions: HealthConditionType[];
+  hasKidneyDisease: boolean;
+  dietaryPreference: DietaryPreference;
+  allergies: string[];
+  dislikedFoods: string[];
+  dailyWaterTargetMl: number;
+  loggedWaterMl: number;
+  dailyProteinTargetG: number;
+  loggedProteinG: number;
+  targetSteps: number;
+  loggedSteps: number;
+  targetSleepHours: number;
+  loggedSleepHours: number;
+}
+
+export interface NutritionLogEntry {
+  id: string;
+  date: string;
+  weightKg?: number;
+  bmi?: number;
+  waterMl?: number;
+  proteinG?: number;
+  steps?: number;
+  sleepHours?: number;
+  adherenceScore?: number;
+}
+

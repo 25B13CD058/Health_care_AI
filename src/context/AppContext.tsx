@@ -4,12 +4,17 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { 
   UserRole, Language, Doctor, Hospital, Medicine, CartItem, MedicineOrder, 
   AmbulanceRequest, HealthRecord, Appointment, HealthReminder, PatientProfile, 
-  AppNotification, FamilyMember, TimelineItem, SymptomAnalysisResult 
+  AppNotification, FamilyMember, TimelineItem, SymptomAnalysisResult,
+  UserHealthProfile, NutritionLogEntry
 } from '../types';
 import { 
   HOSPITALS, DOCTORS, MEDICINES, PATIENT_PROFILE, INITIAL_APPOINTMENTS, 
   INITIAL_RECORDS, INITIAL_REMINDERS, INITIAL_NOTIFICATIONS, FAMILY_MEMBERS, TIMELINE_ITEMS 
 } from '../data/mockData';
+import {
+  INITIAL_HEALTH_PROFILE, INITIAL_NUTRITION_LOGS
+} from '../data/nutritionData';
+
 
 interface AppContextType {
   authUser: User | null;
@@ -53,6 +58,13 @@ interface AppContextType {
   cart: CartItem[];
   medicineOrders: MedicineOrder[];
   activeAmbulance: AmbulanceRequest | null;
+
+  // Health & Nutrition Profile State & Actions
+  userHealthProfile: UserHealthProfile;
+  updateHealthProfile: (profile: Partial<UserHealthProfile>) => Promise<void>;
+  nutritionLogs: NutritionLogEntry[];
+  logWaterIntake: (amountMl: number) => Promise<void>;
+  logNutritionProgress: (entry: Partial<NutritionLogEntry>) => Promise<void>;
   
   // Modals & Focus states
   selectedDoctor: Doctor | null;
@@ -121,6 +133,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [healthReminders, setHealthReminders] = useState<HealthReminder[]>(INITIAL_REMINDERS);
   const [notifications, setNotifications] = useState<AppNotification[]>(INITIAL_NOTIFICATIONS);
 
+  // Health & Nutrition Profile & Logs
+  const [userHealthProfile, setUserHealthProfile] = useState<UserHealthProfile>(INITIAL_HEALTH_PROFILE);
+  const [nutritionLogs, setNutritionLogs] = useState<NutritionLogEntry[]>(INITIAL_NUTRITION_LOGS);
+
   // Cart & Orders
   const [cart, setCart] = useState<CartItem[]>([]);
   const [medicineOrders, setMedicineOrders] = useState<MedicineOrder[]>([]);
@@ -169,6 +185,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setHealthRecords(INITIAL_RECORDS);
       setTimelineItems(TIMELINE_ITEMS);
       setMedicineOrders([]);
+      setUserHealthProfile(INITIAL_HEALTH_PROFILE);
+      setNutritionLogs(INITIAL_NUTRITION_LOGS);
       return;
     }
 
@@ -268,6 +286,58 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             createdAt: new Date(o.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           }));
           setMedicineOrders(mappedOrders);
+        }
+
+        // 5. User Health Profile
+        const { data: hp } = await client
+          .from('user_health_profiles')
+          .select('*')
+          .eq('user_id', authUser.id)
+          .maybeSingle();
+
+        if (hp) {
+          setUserHealthProfile({
+            age: hp.age,
+            sex: hp.sex,
+            heightCm: Number(hp.height_cm),
+            weightKg: Number(hp.weight_kg),
+            activityLevel: hp.activity_level,
+            goal: hp.goal,
+            healthConditions: hp.health_conditions || [],
+            hasKidneyDisease: hp.has_kidney_disease || false,
+            dietaryPreference: hp.dietary_preference || 'vegetarian',
+            allergies: hp.allergies || [],
+            dislikedFoods: hp.disliked_foods || [],
+            dailyWaterTargetMl: hp.daily_water_target_ml || 3000,
+            loggedWaterMl: hp.logged_water_ml || 0,
+            dailyProteinTargetG: hp.daily_protein_target_g || 65,
+            loggedProteinG: hp.logged_protein_g || 0,
+            targetSteps: hp.target_steps || 8000,
+            loggedSteps: hp.logged_steps || 0,
+            targetSleepHours: hp.target_sleep_hours || 8,
+            loggedSleepHours: hp.logged_sleep_hours || 0
+          });
+        }
+
+        // 6. Nutrition Logs
+        const { data: nLogs } = await client
+          .from('nutrition_logs')
+          .select('*')
+          .eq('user_id', authUser.id)
+          .order('date', { ascending: true });
+
+        if (nLogs && nLogs.length > 0) {
+          setNutritionLogs(nLogs.map(l => ({
+            id: l.id,
+            date: l.date,
+            weightKg: Number(l.weight_kg),
+            bmi: Number(l.bmi),
+            waterMl: l.water_ml,
+            proteinG: l.protein_g,
+            steps: l.steps,
+            sleepHours: Number(l.sleep_hours),
+            adherenceScore: l.adherence_score
+          })));
         }
 
       } catch (e) {
@@ -594,6 +664,113 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
   };
 
+  // Health Profile & Nutrition Methods
+  const updateHealthProfile = async (updates: Partial<UserHealthProfile>) => {
+    let nextProfile: UserHealthProfile = userHealthProfile;
+    setUserHealthProfile(prev => {
+      nextProfile = { ...prev, ...updates };
+      return nextProfile;
+    });
+
+    const client = supabase;
+    if (authUser && client && isSupabaseConfigured()) {
+      try {
+        await client.from('user_health_profiles').upsert({
+          user_id: authUser.id,
+          age: nextProfile.age,
+          sex: nextProfile.sex,
+          height_cm: nextProfile.heightCm,
+          weight_kg: nextProfile.weightKg,
+          activity_level: nextProfile.activityLevel,
+          goal: nextProfile.goal,
+          health_conditions: nextProfile.healthConditions,
+          has_kidney_disease: nextProfile.hasKidneyDisease,
+          dietary_preference: nextProfile.dietaryPreference,
+          allergies: nextProfile.allergies,
+          disliked_foods: nextProfile.dislikedFoods,
+          daily_water_target_ml: nextProfile.dailyWaterTargetMl,
+          logged_water_ml: nextProfile.loggedWaterMl,
+          daily_protein_target_g: nextProfile.dailyProteinTargetG,
+          logged_protein_g: nextProfile.loggedProteinG,
+          target_steps: nextProfile.targetSteps,
+          logged_steps: nextProfile.loggedSteps,
+          target_sleep_hours: nextProfile.targetSleepHours,
+          logged_sleep_hours: nextProfile.loggedSleepHours,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+      } catch (e) {
+        console.error('Error updating health profile in Supabase:', e);
+      }
+    }
+  };
+
+  const logWaterIntake = async (amountMl: number) => {
+    const newLogged = Math.max(0, userHealthProfile.loggedWaterMl + amountMl);
+    await updateHealthProfile({ loggedWaterMl: newLogged });
+  };
+
+  const logNutritionProgress = async (entry: Partial<NutritionLogEntry>) => {
+    const todayStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+    const existingIndex = nutritionLogs.findIndex(l => l.date === todayStr);
+
+    const heightM = userHealthProfile.heightCm / 100;
+    const currentWeight = entry.weightKg || userHealthProfile.weightKg;
+    const computedBmi = Number((currentWeight / (heightM * heightM)).toFixed(2));
+
+    const newLogEntry: NutritionLogEntry = {
+      id: existingIndex >= 0 ? nutritionLogs[existingIndex].id : `nlog-${Date.now()}`,
+      date: todayStr,
+      weightKg: currentWeight,
+      bmi: computedBmi,
+      waterMl: entry.waterMl !== undefined ? entry.waterMl : userHealthProfile.loggedWaterMl,
+      proteinG: entry.proteinG !== undefined ? entry.proteinG : userHealthProfile.loggedProteinG,
+      steps: entry.steps !== undefined ? entry.steps : userHealthProfile.loggedSteps,
+      sleepHours: entry.sleepHours !== undefined ? entry.sleepHours : userHealthProfile.loggedSleepHours,
+      adherenceScore: entry.adherenceScore || 90
+    };
+
+    let updatedLogs: NutritionLogEntry[];
+    if (existingIndex >= 0) {
+      updatedLogs = [...nutritionLogs];
+      updatedLogs[existingIndex] = newLogEntry;
+    } else {
+      updatedLogs = [...nutritionLogs, newLogEntry];
+    }
+
+    setNutritionLogs(updatedLogs);
+
+    // Also update health profile state if relevant
+    const profileUpdates: Partial<UserHealthProfile> = {};
+    if (entry.weightKg !== undefined) profileUpdates.weightKg = entry.weightKg;
+    if (entry.waterMl !== undefined) profileUpdates.loggedWaterMl = entry.waterMl;
+    if (entry.proteinG !== undefined) profileUpdates.loggedProteinG = entry.proteinG;
+    if (entry.steps !== undefined) profileUpdates.loggedSteps = entry.steps;
+    if (entry.sleepHours !== undefined) profileUpdates.loggedSleepHours = entry.sleepHours;
+    
+    if (Object.keys(profileUpdates).length > 0) {
+      await updateHealthProfile(profileUpdates);
+    }
+
+    const client = supabase;
+    if (authUser && client && isSupabaseConfigured()) {
+      try {
+        await client.from('nutrition_logs').upsert({
+          user_id: authUser.id,
+          date: todayStr,
+          weight_kg: newLogEntry.weightKg,
+          bmi: newLogEntry.bmi,
+          water_ml: newLogEntry.waterMl,
+          protein_g: newLogEntry.proteinG,
+          steps: newLogEntry.steps,
+          sleep_hours: newLogEntry.sleepHours,
+          adherence_score: newLogEntry.adherenceScore
+        }, { onConflict: 'user_id,date' });
+      } catch (e) {
+        console.error('Error persisting nutrition log to Supabase:', e);
+      }
+    }
+  };
+
   return (
     <AppContext.Provider value={{
       authUser, setAuthUser,
@@ -609,6 +786,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       doctors, hospitals, medicines, patientProfile,
       appointments, healthRecords, healthReminders, notifications,
       cart, medicineOrders, activeAmbulance,
+      userHealthProfile, updateHealthProfile,
+      nutritionLogs, logWaterIntake, logNutritionProgress,
       selectedDoctor, setSelectedDoctor,
       selectedHospital, setSelectedHospital,
       activeVideoConsult, setActiveVideoConsult,
@@ -626,6 +805,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       {children}
     </AppContext.Provider>
   );
+
 };
 
 export const useApp = () => {

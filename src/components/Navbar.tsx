@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   HeartPulse, Bot, Stethoscope, Building2, Pill, Ambulance, 
   FileText, Calendar, User, Bell, ShoppingBag, Globe, ShieldAlert,
-  ChevronDown, Menu, X, Users, Activity, Eye, Siren, Sparkles, LogIn
+  ChevronDown, Menu, X, Users, Activity, Eye, Siren, Sparkles, LogIn, Utensils
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { UserRole, Language } from '../types';
@@ -31,6 +31,7 @@ export const Navbar: React.FC<{ onOpenNotifs: () => void }> = ({ onOpenNotifs })
   const navItems = [
     { id: 'home', label: 'Home', icon: HeartPulse },
     { id: 'assistant', label: 'AI Health Assistant', icon: Bot, badge: 'AI' },
+    { id: 'nutrition', label: 'Health & Nutrition', icon: Utensils, badge: 'NEW' },
     { id: 'specialties', label: 'Specialties', icon: Stethoscope },
     { id: 'hospitals', label: 'Hospitals & ER', icon: Building2 },
     { id: 'medicines', label: 'Medicines', icon: Pill },
@@ -41,6 +42,7 @@ export const Navbar: React.FC<{ onOpenNotifs: () => void }> = ({ onOpenNotifs })
     { id: 'appointments', label: 'Appointments', icon: Calendar },
     { id: 'profile', label: 'Profile', icon: User },
   ];
+
 
   const roles: { id: UserRole; label: string; icon: string }[] = [
     { id: 'patient', label: 'Patient View', icon: '👤' },

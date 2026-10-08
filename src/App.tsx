@@ -28,6 +28,7 @@ import { FamilyProfiles } from './components/FamilyProfiles';
 import { AIChatAssistant } from './components/AIChatAssistant';
 import { SafetyPrivacyModal } from './components/SafetyPrivacyModal';
 import { AuthModal } from './components/AuthModal';
+import { HealthNutritionModule } from './components/nutrition/HealthNutritionModule';
 
 // Dashboards
 import { PatientDashboard } from './components/dashboards/PatientDashboard';
@@ -98,8 +99,10 @@ export const AppContent: React.FC = () => {
         {role === 'patient' && (
           <>
             {activeTab === 'home' && <PatientDashboard />}
+            {activeTab === 'nutrition' && <HealthNutritionModule />}
             {activeTab === 'assistant' && <AIHealthAssistant />}
             {activeTab === 'specialties' && <SpecialtiesGrid />}
+
             {activeTab === 'emergency' && <EmergencyMode />}
             {activeTab === 'timeline' && <HealthTimeline />}
             {activeTab === 'family' && <FamilyProfiles />}
