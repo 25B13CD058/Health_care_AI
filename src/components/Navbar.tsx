@@ -31,7 +31,8 @@ export const Navbar: React.FC<{ onOpenNotifs: () => void }> = ({ onOpenNotifs })
   const navItems = [
     { id: 'home', label: 'Home', icon: HeartPulse },
     { id: 'assistant', label: 'AI Health Assistant', icon: Bot, badge: 'AI' },
-    { id: 'nutrition', label: 'Health & Nutrition', icon: Utensils, badge: 'NEW' },
+    { id: 'ct_scan', label: 'CT Scan Centers', icon: Activity, badge: 'NEW' },
+    { id: 'nutrition', label: 'Health & Nutrition', icon: Utensils },
     { id: 'specialties', label: 'Specialties', icon: Stethoscope },
     { id: 'hospitals', label: 'Hospitals & ER', icon: Building2 },
     { id: 'medicines', label: 'Medicines', icon: Pill },

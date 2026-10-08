@@ -84,10 +84,16 @@ interface AppContextType {
   authModalOpen: boolean;
   setAuthModalOpen: (open: boolean) => void;
 
+  // Demo Doctor & Interactivity State
+  activeDoctorEmail: string;
+  setActiveDoctorEmail: (email: string) => void;
+
   // Actions
   navigateTo: (tab: string, options?: { specialtyId?: string; doctor?: Doctor; hospital?: Hospital }) => void;
   bookAppointment: (doctor: Doctor, date: string, time: string, consultationType: 'In-person' | 'Video Consultation') => Promise<void>;
   cancelAppointment: (id: string) => Promise<void>;
+  updateAppointmentStatusAndNotes: (id: string, status: Appointment['status'], doctorNotes?: string, prescriptionSummary?: string) => Promise<void>;
+  quickDemoLogin: (role: UserRole, email?: string) => void;
   addToCart: (medicine: Medicine, qty?: number) => void;
   removeFromCart: (medicineId: string) => void;
   updateCartQty: (medicineId: string, qty: number) => void;
@@ -151,6 +157,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [emergencyModalOpen, setEmergencyModalOpen] = useState<boolean>(false);
   const [emergencyInfoCardOpen, setEmergencyInfoCardOpen] = useState<boolean>(false);
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
+
+  // Demo Doctor active selection
+  const [activeDoctorEmail, setActiveDoctorEmail] = useState<string>('ananya.rao@careai.demo');
 
   const activeFamilyMember = familyMembers.find(f => f.id === activeFamilyMemberId) || familyMembers[0];
 
@@ -443,6 +452,60 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     addNotification('Appointment Cancelled', 'Your appointment has been cancelled successfully.', 'appointment');
+  };
+
+  // Update Appointment Status & Doctor Notes (Interactivity)
+  const updateAppointmentStatusAndNotes = async (
+    id: string, 
+    status: Appointment['status'], 
+    doctorNotes?: string,
+    prescriptionSummary?: string
+  ) => {
+    setAppointments(prev => prev.map(apt => {
+      if (apt.id === id) {
+        return { 
+          ...apt, 
+          status, 
+          ...(doctorNotes !== undefined ? { doctorNotes } : {}),
+          ...(prescriptionSummary !== undefined ? { prescriptionSummary } : {})
+        };
+      }
+      return apt;
+    }));
+
+    const client = supabase;
+    if (authUser && client && isSupabaseConfigured()) {
+      try {
+        await client
+          .from('appointments')
+          .update({ 
+            status,
+            ...(doctorNotes ? { doctor_notes: doctorNotes } : {})
+          })
+          .eq('id', id);
+      } catch (e) {
+        console.error('Error updating appointment in Supabase:', e);
+      }
+    }
+
+    addNotification('Appointment Updated', `Status updated to ${status}.`, 'appointment');
+  };
+
+  // Quick 1-Click Demo Login Switcher
+  const quickDemoLogin = (targetRole: UserRole, doctorEmail?: string) => {
+    setRole(targetRole);
+    if (doctorEmail) {
+      setActiveDoctorEmail(doctorEmail);
+    }
+    if (targetRole === 'patient') {
+      setActiveTab('home');
+    }
+    setAuthModalOpen(false);
+    addNotification(
+      'Demo Mode Active',
+      `Logged into ${targetRole === 'patient' ? 'Patient Portal Demo' : `Doctor Portal (${doctorEmail || 'General Physician'})`} [Sample Data].`,
+      'appointment'
+    );
   };
 
   // Cart Operations
@@ -796,6 +859,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       emergencyModalOpen, setEmergencyModalOpen,
       emergencyInfoCardOpen, setEmergencyInfoCardOpen,
       authModalOpen, setAuthModalOpen,
+      activeDoctorEmail, setActiveDoctorEmail,
+      updateAppointmentStatusAndNotes, quickDemoLogin,
       navigateTo, bookAppointment, cancelAppointment,
       addToCart, removeFromCart, updateCartQty, clearCart,
       placeMedicineOrder, requestAmbulance, cancelAmbulance,

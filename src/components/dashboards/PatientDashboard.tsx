@@ -138,16 +138,17 @@ export const PatientDashboard: React.FC = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-9 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-3">
           {[
             { id: 'assistant', title: 'AI Assistant', icon: Bot, color: 'text-teal-400' },
+            { id: 'ct_scan', title: 'CT Scan Centers', icon: Activity, color: 'text-amber-400' },
             { id: 'nutrition', title: 'Nutrition & Diet', icon: Utensils, color: 'text-lime-400' },
             { id: 'specialties', title: '27 Specialties', icon: Stethoscope, color: 'text-blue-400' },
             { id: 'hospitals', title: 'Nearby Hospitals', icon: Building2, color: 'text-indigo-400' },
             { id: 'medicines', title: 'Medicines', icon: Pill, color: 'text-emerald-400' },
             { id: 'ambulance', title: 'Ambulance', icon: Ambulance, color: 'text-rose-400' },
             { id: 'records', title: 'Health Records', icon: FileText, color: 'text-purple-400' },
-            { id: 'timeline', title: 'Health Timeline', icon: Activity, color: 'text-amber-400' },
+            { id: 'timeline', title: 'Health Timeline', icon: Activity, color: 'text-teal-300' },
             { id: 'family', title: 'My Family', icon: Users, color: 'text-sky-400' }
           ].map(action => {
             const Icon = action.icon;

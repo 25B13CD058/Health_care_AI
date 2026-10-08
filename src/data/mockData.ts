@@ -1,4 +1,4 @@
-import { MedicalSpecialty, Doctor, Hospital, Medicine, PatientProfile, Appointment, HealthRecord, HealthReminder, AppNotification, FamilyMember, TimelineItem } from '../types';
+import { MedicalSpecialty, Doctor, Hospital, Medicine, PatientProfile, Appointment, HealthRecord, HealthReminder, AppNotification, FamilyMember, TimelineItem, DiagnosticCenter, MedicineInfo, DemoDoctor } from '../types';
 
 export const FAMILY_MEMBERS: FamilyMember[] = [
   {
@@ -1037,3 +1037,420 @@ export const INITIAL_NOTIFICATIONS: AppNotification[] = [
     category: 'report'
   }
 ];
+
+export const DIAGNOSTIC_CENTERS: DiagnosticCenter[] = [
+  {
+    id: 'diag-1',
+    name: 'Apollo Diagnostics & Advanced Imaging',
+    address: 'Road No. 36, Jubilee Hills, Near Metro Pillar 1655',
+    area: 'Jubilee Hills',
+    city: 'Hyderabad',
+    distanceKm: 1.2,
+    lat: 17.4320,
+    lng: 78.4070,
+    phone: '+91 40 2360 7777',
+    rating: 4.8,
+    reviewCount: 340,
+    services: ['CT Scan', 'MRI', 'X-Ray', 'Ultrasound', 'PET Scan', 'Diagnostic Lab'],
+    operatingHours: 'Open 24/7 for Emergencies',
+    accreditation: 'NABL & NABH Accredited'
+  },
+  {
+    id: 'diag-2',
+    name: 'Vijaya Diagnostic Centre (Banjara Hills Hub)',
+    address: 'Street No. 1, Banjara Hills, Opposite Care Hospital',
+    area: 'Banjara Hills',
+    city: 'Hyderabad',
+    distanceKm: 2.8,
+    lat: 17.4150,
+    lng: 78.4420,
+    phone: '+91 40 2342 0422',
+    rating: 4.7,
+    reviewCount: 512,
+    services: ['CT Scan', 'MRI', 'X-Ray', 'Ultrasound', 'Diagnostic Lab'],
+    operatingHours: '06:00 AM – 10:00 PM',
+    accreditation: 'CAP & NABL Accredited'
+  },
+  {
+    id: 'diag-3',
+    name: 'Lucid Medical Diagnostics & CT Center',
+    address: 'Financial District, Gachibowli Main Rd, Near Wipro Circle',
+    area: 'Gachibowli',
+    city: 'Hyderabad',
+    distanceKm: 4.1,
+    lat: 17.4400,
+    lng: 78.3480,
+    phone: '+91 40 4488 9900',
+    rating: 4.6,
+    reviewCount: 220,
+    services: ['CT Scan', 'MRI', 'Ultrasound', 'X-Ray', 'Diagnostic Lab'],
+    operatingHours: '07:00 AM – 09:30 PM',
+    accreditation: 'NABL Accredited'
+  },
+  {
+    id: 'diag-4',
+    name: 'Elbit Medical Diagnostics (HITECH City)',
+    address: 'Mindspace IT Park Road, HITECH City',
+    area: 'HITECH City',
+    city: 'Hyderabad',
+    distanceKm: 3.5,
+    lat: 17.4480,
+    lng: 78.3810,
+    phone: '+91 40 6767 8888',
+    rating: 4.9,
+    reviewCount: 410,
+    services: ['CT Scan', 'PET Scan', 'MRI', 'X-Ray', 'Diagnostic Lab'],
+    operatingHours: 'Open 24/7',
+    accreditation: 'NABL & ISO 9001'
+  },
+  {
+    id: 'diag-5',
+    name: 'Tenet Diagnostics & 128-Slice CT',
+    address: '100 Feet Road, Madhapur, Near Ayyappa Society',
+    area: 'Madhapur',
+    city: 'Hyderabad',
+    distanceKm: 2.1,
+    lat: 17.4485,
+    lng: 78.3910,
+    phone: '+91 40 4567 8900',
+    rating: 4.5,
+    reviewCount: 180,
+    services: ['CT Scan', 'X-Ray', 'Ultrasound', 'Diagnostic Lab'],
+    operatingHours: '06:30 AM – 10:00 PM',
+    accreditation: 'NABL Accredited'
+  },
+  {
+    id: 'diag-6',
+    name: 'Suburban Diagnostics & Imaging Center',
+    address: 'Raj Bhavan Road, Somajiguda',
+    area: 'Somajiguda',
+    city: 'Hyderabad',
+    distanceKm: 5.4,
+    lat: 17.4250,
+    lng: 78.4590,
+    phone: '+91 40 2331 4455',
+    rating: 4.7,
+    reviewCount: 290,
+    services: ['CT Scan', 'MRI', 'PET Scan', 'Ultrasound', 'Diagnostic Lab'],
+    operatingHours: '07:00 AM – 09:00 PM',
+    accreditation: 'NABL Accredited'
+  }
+];
+
+export const EXPANDED_MEDICINES: MedicineInfo[] = [
+  {
+    id: 'med-pcm',
+    name: 'Paracetamol 500mg / 650mg',
+    genericName: 'Paracetamol (Acetaminophen)',
+    category: 'Pain/fever',
+    form: 'Tablet',
+    otcOrPrescription: 'Over-The-Counter (OTC)',
+    commonUses: [
+      'Temporary relief of mild-to-moderate fever',
+      'Relief of headache, muscle ache, and toothache',
+      'Symptomatic discomfort during cold or viral illness'
+    ],
+    generalPrecautions: [
+      'Do not exceed 4,000 mg (4 grams) total per day in adults.',
+      'Take with plain water; can be taken with or after food.',
+      'Maintain an interval of at least 4 to 6 hours between doses.'
+    ],
+    sideEffects: [
+      'Nausea or abdominal discomfort (rare at recommended doses)',
+      'Allergic skin rash (infrequent)'
+    ],
+    warnings: [
+      'LIVER SAFETY: Severe liver damage may occur if exceeding maximum daily dose or combined with heavy alcohol intake.',
+      'Avoid taking concurrently with other cough/cold formulations containing acetaminophen/paracetamol.',
+      'Consult a physician if fever persists beyond 3 days or pain exceeds 5 days.'
+    ],
+    interactions: [
+      'Warfarin / blood thinners (long-term high dose PCM may enhance anticoagulant effect)',
+      'Alcohol (increases hepatic toxicity risk)'
+    ],
+    symptomsSupported: ['fever', 'headache', 'body ache', 'pain', 'cold', 'toothache']
+  },
+  {
+    id: 'med-cet',
+    name: 'Cetirizine 10mg',
+    genericName: 'Cetirizine Hydrochloride',
+    category: 'Allergy',
+    form: 'Tablet',
+    otcOrPrescription: 'Over-The-Counter (OTC)',
+    commonUses: [
+      'Relief of allergic rhinitis (sneezing, runny nose, nasal itching)',
+      'Relief of watery, itchy eyes caused by seasonal allergies',
+      'Management of hives (urticaria) and allergic skin itching'
+    ],
+    generalPrecautions: [
+      'Usually taken once daily, preferably in the evening due to mild sedative potential.',
+      'Use caution when driving or operating machinery until individual response is known.'
+    ],
+    sideEffects: [
+      'Mild drowsiness or tiredness',
+      'Dry mouth',
+      'Mild dizziness'
+    ],
+    warnings: [
+      'KIDNEY IMPAIRMENT: Dosage adjustment required for patients with moderate-to-severe renal disease.',
+      'ELDERLY USERS: Elderly patients may experience increased anticholinergic sensitivity or sedation.',
+      'Avoid co-administration with alcohol or CNS depressants.'
+    ],
+    interactions: [
+      'Sedatives, tranquilizers, and alcohol (additive drowsiness effect)'
+    ],
+    symptomsSupported: ['allergy', 'sneezing', 'runny nose', 'skin rash', 'itching', 'hives', 'watery eyes']
+  },
+  {
+    id: 'med-ors',
+    name: 'ORS (Oral Rehydration Salts)',
+    genericName: 'WHO-Formulated Oral Rehydration Solution (Sodium, Potassium, Glucose, Citrate)',
+    category: 'Oral rehydration',
+    form: 'Sachet / Powder',
+    otcOrPrescription: 'Over-The-Counter (OTC)',
+    commonUses: [
+      'Prevention and treatment of mild-to-moderate dehydration due to diarrhea or acute gastroenteritis',
+      'Electrolyte restoration following heavy exertion, heat exhaustion, or vomiting'
+    ],
+    generalPrecautions: [
+      'Dissolve 1 full sachet in exactly 1 Liter of clean drinking water.',
+      'Do not boil the prepared ORS solution.',
+      'Discard any unused prepared solution after 24 hours.'
+    ],
+    sideEffects: [
+      'Puffiness around eyes if overconsumed in short duration (rare)'
+    ],
+    warnings: [
+      'SEVERE DEHYDRATION: If patient exhibits extreme lethargy, sunken eyes, inability to drink, or continuous vomiting, seek immediate emergency IV fluid medical care.',
+      'KIDNEY DISEASE: Patients with severe renal impairment or hyperkalemia must use under physician supervision.'
+    ],
+    interactions: ['None significant when reconstituted properly.'],
+    symptomsSupported: ['dehydration', 'diarrhea', 'loose motions', 'vomiting', 'heat exhaustion', 'weakness']
+  },
+  {
+    id: 'med-digene',
+    name: 'Antacid Chewable / Syrup (Digene / Gelusil)',
+    genericName: 'Magnesium Hydroxide + Aluminium Hydroxide + Simethicone',
+    category: 'Acidity',
+    form: 'Tablet / Liquid Syrup',
+    otcOrPrescription: 'Over-The-Counter (OTC)',
+    commonUses: [
+      'Immediate symptomatic relief of acidity, heartburn, and hyperacidity',
+      'Relief of gas bloating and flatulence (Simethicone constituent)'
+    ],
+    generalPrecautions: [
+      'Chew tablets thoroughly before swallowing, 30–60 minutes after meals or when acid symptoms occur.',
+      'Separate antacid administration by at least 2 hours from other oral prescription medications.'
+    ],
+    sideEffects: [
+      'Mild constipation (aluminium salt) or mild laxative effect (magnesium salt)',
+      'Chalky taste in mouth'
+    ],
+    warnings: [
+      'RENAL DISEASE: Avoid prolonged high-dose use in kidney disease due to risk of aluminium or magnesium accumulation.',
+      'Consult a doctor if acid symptoms persist continuously for more than 2 weeks.'
+    ],
+    interactions: [
+      'Tetra/Fluoroquinolone antibiotics, Iron supplements, Digoxin (antacids decrease their intestinal absorption)'
+    ],
+    symptomsSupported: ['acidity', 'heartburn', 'indigestion', 'gas', 'bloating', 'chest burning']
+  },
+  {
+    id: 'med-cough',
+    name: 'Basic Cough & Cold Syrup (Benadryl / Dextromethorphan)',
+    genericName: 'Dextromethorphan HBr + Chlorpheniramine Maleate',
+    category: 'Cough/cold',
+    form: 'Liquid Syrup',
+    otcOrPrescription: 'Over-The-Counter (OTC)',
+    commonUses: [
+      'Temporary relief of dry cough caused by minor throat and bronchial irritation',
+      'Reduction of nasal congestion and tickling cough'
+    ],
+    generalPrecautions: [
+      'Use measuring cup provided; do not drink directly from bottle.',
+      'May cause drowsiness—avoid night driving or hazardous activity.'
+    ],
+    sideEffects: [
+      'Drowsiness',
+      'Dizziness',
+      'Mild nausea or constipation'
+    ],
+    warnings: [
+      'NOT FOR ASTHMA / CHRONIC COUGH: Do not use for persistent productive cough accompanied by excessive phlegm without medical evaluation.',
+      'CHILDREN & PREGNANCY: Consult pediatrician for children under 6 years of age.'
+    ],
+    interactions: [
+      'MAO Inhibitor antidepressants (severe interaction risk)'
+    ],
+    symptomsSupported: ['cough', 'dry cough', 'cold', 'sore throat', 'throat irritation']
+  },
+  {
+    id: 'med-ibu',
+    name: 'Ibuprofen 400mg',
+    genericName: 'Ibuprofen (Non-Steroidal Anti-Inflammatory Drug - NSAID)',
+    category: 'Pain/fever',
+    form: 'Tablet',
+    otcOrPrescription: 'Over-The-Counter (OTC)',
+    commonUses: [
+      'Relief of inflammatory joint pain, muscle strain, sprains, and backache',
+      'Reduction of dental pain, menstrual cramps (dysmenorrhea), and fever'
+    ],
+    generalPrecautions: [
+      'Always take with or immediately after meals or milk to minimize gastric mucosal irritation.',
+      'Use the lowest effective dose for the shortest duration necessary.'
+    ],
+    sideEffects: [
+      'Stomach upset, heartburn, or nausea',
+      'Mild abdominal pain'
+    ],
+    warnings: [
+      'STOMACH ULCER SAFETY: High risk of gastrointestinal bleeding or ulceration, especially in elderly patients or those with history of peptic ulcers.',
+      'CARDIOVASCULAR & RENAL RISK: May elevate blood pressure, cause fluid retention, or impair renal function in pre-existing heart/kidney disease.',
+      'AVOID IN LATE PREGNANCY (3rd Trimester).'
+    ],
+    interactions: [
+      'Blood thinners (Aspirin, Warfarin), Antihypertensive ACE inhibitors, Corticosteroids'
+    ],
+    symptomsSupported: ['pain', 'joint pain', 'back pain', 'inflammation', 'swelling', 'menstrual cramps', 'sprain']
+  },
+  {
+    id: 'med-vitd',
+    name: 'Vitamin D3 60,000 IU',
+    genericName: 'Cholecalciferol (Vitamin D3)',
+    category: 'Vitamins/minerals',
+    form: 'Capsule / Granules',
+    otcOrPrescription: 'Prescription Only',
+    commonUses: [
+      'Treatment and correction of diagnosed Vitamin D deficiency',
+      'Support for bone mineralization, osteomalacia, and calcium absorption in osteoporosis'
+    ],
+    generalPrecautions: [
+      'Typically taken ONCE WEEKLY for 8–12 weeks as prescribed by a physician.',
+      'Take with a fat-containing meal (e.g. milk, curd) for optimal fat-soluble intestinal absorption.'
+    ],
+    sideEffects: [
+      'Hypercalcemia symptoms if over-dosed (nausea, constipation, excessive thirst)'
+    ],
+    warnings: [
+      'REQUIRES PERIODIC BLOOD MONITORING: Monitor 25-hydroxy Vitamin D levels and serum calcium during therapy.',
+      'Do not take daily high-dose 60k capsules unless specifically directed by a doctor.'
+    ],
+    interactions: [
+      'Thiazide diuretics (increased risk of hypercalcemia), Anticonvulsants (accelerate Vit D metabolism)'
+    ],
+    symptomsSupported: ['vitamin deficiency', 'bone pain', 'muscle weakness', 'fatigue', 'osteoporosis']
+  },
+  {
+    id: 'med-calamine',
+    name: 'Calamine & Aloe Vera Lotion',
+    genericName: 'Calamine (Zinc Oxide + Ferric Oxide) + Aloe Vera Extract',
+    category: 'Skin care/topical',
+    form: 'Topical Lotion',
+    otcOrPrescription: 'Over-The-Counter (OTC)',
+    commonUses: [
+      'Symptomatic relief of mild skin itching, insect bites, prickly heat, and sun burns',
+      'Soothing agent for chickenpox lesions or mild allergic contact dermatitis'
+    ],
+    generalPrecautions: [
+      'For EXTERNAL USE ONLY. Shake well before applying to clean skin.',
+      'Allow lotion to dry completely on skin surface.'
+    ],
+    sideEffects: [
+      'Mild dry skin sensation (rare)'
+    ],
+    warnings: [
+      'Do not apply to open wounds, deep cuts, or blistered raw skin.',
+      'Avoid contact with eyes, mouth, and internal mucous membranes.'
+    ],
+    interactions: ['None expected with topical application.'],
+    symptomsSupported: ['skin itching', 'prickly heat', 'insect bite', 'sunburn', 'rash', 'chickenpox']
+  }
+];
+
+export const DEMO_DOCTORS: DemoDoctor[] = [
+  {
+    id: 'doc-demo-1',
+    email: 'ananya.rao@careai.demo',
+    name: 'Dr. Ananya Rao',
+    specialty: 'General Physician',
+    specialtyId: 'general-medicine',
+    hospital: 'Apollo Hospitals, Jubilee Hills',
+    photo: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300&q=80',
+    fee: 800,
+    experienceYears: 14,
+    qualification: 'MBBS, MD (General Medicine)',
+    rating: 4.9,
+    availability: 'Mon - Sat (09:00 AM - 04:00 PM)'
+  },
+  {
+    id: 'doc-demo-2',
+    email: 'rahul.mehta@careai.demo',
+    name: 'Dr. Rahul Mehta',
+    specialty: 'Cardiologist',
+    specialtyId: 'cardiology',
+    hospital: 'Care Hospitals, Banjara Hills',
+    photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80',
+    fee: 1200,
+    experienceYears: 18,
+    qualification: 'MBBS, MD, DM (Cardiology), FACC',
+    rating: 4.95,
+    availability: 'Mon - Fri (10:00 AM - 05:00 PM)'
+  },
+  {
+    id: 'doc-demo-3',
+    email: 'priya.sharma@careai.demo',
+    name: 'Dr. Priya Sharma',
+    specialty: 'Endocrinologist',
+    specialtyId: 'general-medicine',
+    hospital: 'Yashoda Hospitals, HITECH City',
+    photo: 'https://images.unsplash.com/photo-1594824813571-24a69c100d37?auto=format&fit=crop&w=300&q=80',
+    fee: 1000,
+    experienceYears: 12,
+    qualification: 'MBBS, MD, DNB (Endocrinology)',
+    rating: 4.85,
+    availability: 'Tue - Sat (11:00 AM - 06:00 PM)'
+  },
+  {
+    id: 'doc-demo-4',
+    email: 'arjun.kumar@careai.demo',
+    name: 'Dr. Arjun Kumar',
+    specialty: 'Dermatologist',
+    specialtyId: 'dermatology',
+    hospital: 'Continental Hospital, Gachibowli',
+    photo: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=300&q=80',
+    fee: 900,
+    experienceYears: 10,
+    qualification: 'MBBS, MD (Dermatology, Venereology & Leprosy)',
+    rating: 4.8,
+    availability: 'Mon - Sat (10:00 AM - 03:00 PM)'
+  },
+  {
+    id: 'doc-demo-5',
+    email: 'sneha.reddy@careai.demo',
+    name: 'Dr. Sneha Reddy',
+    specialty: 'Gynecologist',
+    specialtyId: 'gynecology',
+    hospital: 'KIMS Hospitals, Kondapur',
+    photo: 'https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=300&q=80',
+    fee: 1100,
+    experienceYears: 15,
+    qualification: 'MBBS, MS (Obstetrics & Gynecology), DNB',
+    rating: 4.9,
+    availability: 'Mon - Sat (09:30 AM - 04:30 PM)'
+  },
+  {
+    id: 'doc-demo-6',
+    email: 'vikram.singh@careai.demo',
+    name: 'Dr. Vikram Singh',
+    specialty: 'Orthopedic Specialist',
+    specialtyId: 'orthopaedics',
+    hospital: 'Star Hospitals, Nanakramguda',
+    photo: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=300&q=80',
+    fee: 1000,
+    experienceYears: 16,
+    qualification: 'MBBS, MS (Orthopaedics), M.Ch (UK)',
+    rating: 4.88,
+    availability: 'Mon - Fri (11:00 AM - 05:00 PM)'
+  }
+];
+

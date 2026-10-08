@@ -29,6 +29,7 @@ import { AIChatAssistant } from './components/AIChatAssistant';
 import { SafetyPrivacyModal } from './components/SafetyPrivacyModal';
 import { AuthModal } from './components/AuthModal';
 import { HealthNutritionModule } from './components/nutrition/HealthNutritionModule';
+import { CTScanCentersMap } from './components/CTScanCentersMap';
 
 // Dashboards
 import { PatientDashboard } from './components/dashboards/PatientDashboard';
@@ -99,6 +100,7 @@ export const AppContent: React.FC = () => {
         {role === 'patient' && (
           <>
             {activeTab === 'home' && <PatientDashboard />}
+            {activeTab === 'ct_scan' && <CTScanCentersMap />}
             {activeTab === 'nutrition' && <HealthNutritionModule />}
             {activeTab === 'assistant' && <AIHealthAssistant />}
             {activeTab === 'specialties' && <SpecialtiesGrid />}

@@ -224,6 +224,8 @@ export interface Appointment {
   fee: number;
   status: 'Upcoming' | 'Completed' | 'Cancelled';
   memberId?: string;
+  doctorNotes?: string;
+  prescriptionSummary?: string;
 }
 
 export interface HealthReminder {
@@ -395,4 +397,53 @@ export interface NutritionLogEntry {
   sleepHours?: number;
   adherenceScore?: number;
 }
+
+export interface DiagnosticCenter {
+  id: string;
+  name: string;
+  address: string;
+  area: string;
+  city: string;
+  distanceKm: number;
+  lat: number;
+  lng: number;
+  phone: string;
+  rating: number;
+  reviewCount: number;
+  services: ('CT Scan' | 'MRI' | 'X-Ray' | 'Ultrasound' | 'PET Scan' | 'Diagnostic Lab')[];
+  operatingHours: string;
+  accreditation: string;
+  image?: string;
+}
+
+export interface MedicineInfo {
+  id: string;
+  name: string;
+  genericName: string;
+  category: string;
+  form: string;
+  otcOrPrescription: 'Over-The-Counter (OTC)' | 'Prescription Only';
+  commonUses: string[];
+  generalPrecautions: string[];
+  sideEffects: string[];
+  warnings: string[];
+  interactions?: string[];
+  symptomsSupported: string[];
+}
+
+export interface DemoDoctor {
+  id: string;
+  email: string;
+  name: string;
+  specialty: string;
+  specialtyId: string;
+  hospital: string;
+  photo: string;
+  fee: number;
+  experienceYears: number;
+  qualification: string;
+  rating: number;
+  availability: string;
+}
+
 
